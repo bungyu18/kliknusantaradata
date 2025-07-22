@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klik Nusantara - Login Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse-red {
+            animation: pulseRed 2s infinite;
+        }
+
+        @keyframes pulseRed {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+
+
+    <!-- Dashboard Page -->
+    <div id="dashboard" class="w-full max-w-7xl mx-auto p-6">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <!-- Navigation Menu -->
+            <div class="bg-gray-50 border-b">
+                <div class="flex space-x-0">
+                    <button 
+                        onclick="showSection('dataDesa')" 
+                        id="tabDataDesa"
+                        class="px-6 py-4 font-medium text-red-600 bg-white border-b-2 border-red-600 transition-all"
+                    >
+                        Data Desa
+                    </button>
+                    <button 
+                        onclick="showSection('dataMitra')" 
+                        id="tabDataMitra"
+                        class="px-6 py-4 font-medium text-gray-600 hover:text-red-600 hover:bg-gray-100 transition-all"
+                    >
+                        Data Mitra
+                    </button>
+                    <button 
+                        onclick="showSection('dataBerita')" 
+                        id="tabDataBerita"
+                        class="px-6 py-4 font-medium text-gray-600 hover:text-red-600 hover:bg-gray-100 transition-all"
+                    >
+                        Data Berita
+                    </button>
+                </div>
+            </div>
+
+            <!-- Data Desa Section -->
+            <div id="dataDesa" class="section-content p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Data Desa</h2>
+                    <button 
+                        onclick="showAddVillageForm()"
+                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-all"
+                    >
+                        + Tambah Desa
+                    </button>
+                </div>
+
+                <!-- Village List -->
+                <div class="bg-white rounded-lg border overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Desa</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kecamatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="villageTableBody" class="divide-y divide-gray-200">
+                                <!-- Village data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add Village Form (Hidden) -->
+                <div id="addVillageForm" class="hidden mt-6 bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-4">Tambah Data Desa Baru</h3>
+                    <form id="villageForm" class="space-y-4">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <input type="text" id="villageName" placeholder="Nama Desa" class="px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500" required>
+                            <input type="text" id="villageDistrict" placeholder="Kecamatan" class="px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500" required>
+                            <select id="villageStatus" class="px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500" required>
+                                <option value="">Pilih Status</option>
+                                <option value="YA">YA</option>
+                                <option value="TIDAK">TIDAK</option>
+                                <option value="PROSES">PROSES</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-4">
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg">Simpan</button>
+                            <button type="button" onclick="hideAddVillageForm()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Data Mitra Section -->
+            <div id="dataMitra" class="section-content hidden p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Data Mitra</h2>
+                </div>
+
+                <!-- Partner List -->
+                <div class="bg-white rounded-lg border overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Mitra</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="partnerTableBody" class="divide-y divide-gray-200">
+                                <!-- Partner data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Berita Section -->
+            <div id="dataBerita" class="section-content hidden p-6">
+                <!-- Default View: Data Berita List -->
+                <div id="dataBeritaList">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Data Berita</h2>
+                    
+                    <!-- Statistics Cards -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+                            <h3 class="text-red-600 font-medium">Total Berita</h3>
+                            <p class="text-2xl font-bold text-red-800" id="totalBerita">0</p>
+                        </div>
+                        <div class="bg-purple-50 p-6 rounded-lg border border-purple-200">
+                            <h3 class="text-purple-600 font-medium">Mitra Aktif</h3>
+                            <p class="text-2xl font-bold text-purple-800" id="mitraAktif">0</p>
+                        </div>
+                    </div>
+
+                    <!-- News by Village/Partner -->
+                    <div class="bg-white rounded-lg border overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Desa/Mitra</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Wilayah</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Berita</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="newsTableBody" class="divide-y divide-gray-200">
+                                    <!-- News data will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Postingan Berita View (Hidden by default) -->
+                <div id="postinganBeritaView" class="hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <button onclick="backToDataBerita()" class="text-red-600 hover:text-red-800 mb-2 flex items-center space-x-2 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                <span>Kembali ke Data Berita</span>
+                            </button>
+                            <h2 class="text-xl font-semibold text-gray-800">Postingan Berita</h2>
+                            <p class="text-gray-600 mt-1" id="selectedVillageInfo">Pilih desa dari Data Berita untuk melihat postingan</p>
+                        </div>
+                    </div>
+
+                    <!-- Monthly News Grid -->
+                    <div id="monthlyNewsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <!-- Monthly cards will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set default user
+        let currentUser = { username: 'admin', name: 'Admin', role: 'Administrator' };
+
+        // Data storage (same as before)
+        let villageData = [
+            {name: "Lais", district: "Dondo", status: "TIDAK"},
+            {name: "Ogowele", district: "Dondo", status: "TIDAK"},
+            {name: "Malomba", district: "Dondo", status: "TIDAK"},
+            {name: "Malulu", district: "Dondo", status: "TIDAK"},
+            {name: "Betengon", district: "Dondo", status: "TIDAK"},
+            {name: "Lobuo", district: "Dondo", status: "TIDAK"},
+            {name: "Luokmanipi", district: "Dondo", status: "TIDAK"},
+            {name: "Malala", district: "Dondo", status: "TIDAK"},
+            {name: "Ogogasang", district: "Dondo", status: "TIDAK"},
+            {name: "Pangkung", district: "Dondo", status: "TIDAK"},
+            {name: "Ogogili", district: "Dondo", status: "TIDAK"},
+            {name: "Bambapun", district: "Dondo", status: "TIDAK"},
+            {name: "Ogowele Buga", district: "Jusman", status: "TIDAK"},
+            {name: "Salumbia", district: "Dondo", status: "TIDAK"},
+            {name: "Anggasan", district: "Dondo", status: "TIDAK"},
+            {name: "Tinabogan", district: "Dondo", status: "TIDAK"},
+            {name: "Ogolali", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Stadong", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Balaroa", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Bambapula", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Tompoh", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Banagan", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Ogotua", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Kabinuang", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Sese", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Simatang Utara", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Simatang Tanjung", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Malambigu", district: "Dampal Utara", status: "TIDAK"},
+            {name: "Lempe", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Soni", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Bangkir", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Paddumpu", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Puse", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Tampiala", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Lemba Harpan", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Pallakawe", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Kombo", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Simuntu", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Mimbala", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Abbajareng", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Dongko", district: "Dampal Selatan", status: "TIDAK"},
+            {name: "Basi", district: "Basidondo", status: "TIDAK"},
+            {name: "Kayulompa", district: "Basidondo", status: "TIDAK"},
+            {name: "Kongkomos", district: "Basidondo", status: "TIDAK"},
+            {name: "Galandao", district: "Basidondo", status: "TIDAK"},
+            {name: "Marisa", district: "Basidondo", status: "TIDAK"},
+            {name: "Silondow", district: "Basidondo", status: "TIDAK"},
+            {name: "Kinapasan", district: "Basidondo", status: "TIDAK"},
+            {name: "Labonu", district: "Basidondo", status: "TIDAK"},
+            {name: "Ogosifat", district: "Basidondo", status: "TIDAK"},
+            {name: "Sibaluton", district: "Basidondo", status: "TIDAK"},
+            {name: "Lampasio", district: "Lampasio", status: "TIDAK"},
+            {name: "Oyom", district: "Lampasio", status: "TIDAK"},
+            {name: "Ogomatanang", district: "Lampasio", status: "TIDAK"},
+            {name: "Tinading", district: "Lampasio", status: "TIDAK"},
+            {name: "Salugan", district: "Lampasio", status: "TIDAK"},
+            {name: "Sibea", district: "Lampasio", status: "TIDAK"},
+            {name: "Janja", district: "Lampasio", status: "TIDAK"},
+            {name: "Muliasari", district: "Lampasio", status: "TIDAK"},
+            {name: "Maibua", district: "Lampasio", status: "TIDAK"},
+            {name: "Labuanlobo", district: "Ogodeide", status: "TIDAK"},
+            {name: "Kamalu", district: "Ogodeide", status: "TIDAK"},
+            {name: "Sambujan", district: "Ogodeide", status: "TIDAK"},
+            {name: "Buga", district: "Ogodeide", status: "TIDAK"},
+            {name: "Bambalaga", district: "Ogodeide", status: "TIDAK"},
+            {name: "Batuilo", district: "Ogodeide", status: "TIDAK"},
+            {name: "Pagaiatan", district: "Ogodeide", status: "TIDAK"},
+            {name: "Bilo", district: "Ogodeide", status: "TIDAK"},
+            {name: "Muara Besar", district: "Ogodeide", status: "TIDAK"},
+            {name: "Pulias", district: "Ogodeide", status: "TIDAK"},
+            {name: "Kabetan", district: "Ogodeide", status: "TIDAK"},
+            {name: "Sandana", district: "Galang", status: "TIDAK"},
+            {name: "Ogomoli", district: "Galang", status: "TIDAK"},
+            {name: "Kalangkangan", district: "Galang", status: "TIDAK"},
+            {name: "Lantapan", district: "Galang", status: "TIDAK"},
+            {name: "Lakatan", district: "Galang", status: "TIDAK"},
+            {name: "Kinopasan", district: "Galang", status: "TIDAK"},
+            {name: "Malangga", district: "Galang", status: "TIDAK"},
+            {name: "Aung", district: "Galang", status: "TIDAK"},
+            {name: "Bajugan", district: "Galang", status: "TIDAK"},
+            {name: "Tinigi", district: "Galang", status: "TIDAK"},
+            {name: "Lalos", district: "Galang", status: "TIDAK"},
+            {name: "Ginunggung", district: "Galang", status: "TIDAK"},
+            {name: "Sabang", district: "Galang", status: "TIDAK"},
+            {name: "Tende", district: "Galang", status: "TIDAK"},
+            {name: "Lakuan Tolitoli", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Tombolo", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Binontoan", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Gio", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Pinjan", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Salumpaga", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Laulalang", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Teluk Jaya", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Santigi", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Diule", district: "Tolitoli Utara", status: "TIDAK"},
+            {name: "Lingadan", district: "Dakopemean", status: "TIDAK"},
+            {name: "Kapas", district: "Dakopemean", status: "TIDAK"},
+            {name: "Dungingis", district: "Dakopemean", status: "TIDAK"},
+            {name: "Galumpang", district: "Dakopemean", status: "TIDAK"},
+            {name: "Pangi", district: "Baolan", status: "TIDAK"},
+            {name: "Dadakitan", district: "Baolan", status: "TIDAK"},
+            {name: "Buntunan", district: "Baolan", status: "TIDAK"},
+            {name: "Lelean Nono", district: "Baolan", status: "TIDAK"}
+        ];
+
+        let partnerData = [];
+        let newsData = [];
+        let selectedVillage = null;
+        let newsPosts = {};
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved data from localStorage
+            loadDataFromStorage();
+            
+            // Initialize dashboard directly
+            initializeDashboard();
+        });
+
+        function initializeDashboard() {
+            // Initialize dashboard data
+            renderVillageTable();
+            renderPartnerTable();
+            renderNewsTable();
+            updateStatistics();
+            initializeNewsPosts();
+        }
+
+
+
+        // Data storage functions
+        function saveDataToStorage() {
+            try {
+                localStorage.setItem('villageData', JSON.stringify(villageData));
+                localStorage.setItem('partnerData', JSON.stringify(partnerData));
+                localStorage.setItem('newsData', JSON.stringify(newsData));
+                localStorage.setItem('newsPosts', JSON.stringify(newsPosts));
+                console.log('✅ Data berhasil disimpan otomatis');
+            } catch (error) {
+                console.error('❌ Error menyimpan data:', error);
+            }
+        }
+
+        function loadDataFromStorage() {
+            try {
+                const savedVillageData = localStorage.getItem('villageData');
+                const savedPartnerData = localStorage.getItem('partnerData');
+                const savedNewsData = localStorage.getItem('newsData');
+                const savedNewsPosts = localStorage.getItem('newsPosts');
+
+                if (savedVillageData) {
+                    villageData = JSON.parse(savedVillageData);
+                }
+                if (savedPartnerData) {
+                    partnerData = JSON.parse(savedPartnerData);
+                }
+                if (savedNewsData) {
+                    newsData = JSON.parse(savedNewsData);
+                }
+                if (savedNewsPosts) {
+                    newsPosts = JSON.parse(savedNewsPosts);
+                }
+                
+                console.log('✅ Data berhasil dimuat dari penyimpanan');
+            } catch (error) {
+                console.error('❌ Error memuat data:', error);
+            }
+        }
+
+        // Initialize sample news posts
+        function initializeNewsPosts() {
+            // Initialize empty news posts for all active villages
+            const activeVillages = villageData.filter(v => v.status === 'YA');
+            activeVillages.forEach(village => {
+                const villageKey = `${village.name}_${village.district}`;
+                if (!newsPosts[villageKey]) {
+                    newsPosts[villageKey] = [];
+                }
+            });
+        }
+
+        // Render village table
+        function renderVillageTable() {
+            const tbody = document.getElementById('villageTableBody');
+            tbody.innerHTML = '';
+            
+            villageData.forEach((village, index) => {
+                const statusClass = village.status === 'YA' ? 'bg-green-100 text-green-800' : 
+                                  village.status === 'PROSES' ? 'bg-yellow-100 text-yellow-800' : 
+                                  'bg-red-100 text-red-800';
+                
+                const row = `
+                    <tr id="row-${index}">
+                        <td class="px-6 py-4 text-sm text-gray-900">${index + 1}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900 cursor-pointer hover:bg-gray-50 transition-colors" id="name-${index}" onclick="editCell(${index}, 'name')" title="Klik untuk edit">${village.name}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900 cursor-pointer hover:bg-gray-50 transition-colors" id="district-${index}" onclick="editCell(${index}, 'district')" title="Klik untuk edit">${village.district}</td>
+                        <td class="px-6 py-4">
+                            <span class="${statusClass} px-2 py-1 rounded-full text-xs cursor-pointer hover:opacity-80 transition-opacity" id="status-${index}" onclick="editCell(${index}, 'status')" title="Klik untuk edit">${village.status}</span>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Render partner table
+        function renderPartnerTable() {
+            const tbody = document.getElementById('partnerTableBody');
+            tbody.innerHTML = '';
+            
+            // Add villages with status "YA" as partners
+            const activeVillages = villageData.filter(v => v.status === 'YA');
+            let allPartners = [...partnerData];
+            
+            activeVillages.forEach(village => {
+                allPartners.push({
+                    name: `Desa ${village.name}`,
+                    status: "Aktif",
+                    isVillage: true,
+                    villageIndex: villageData.findIndex(v => v.name === village.name)
+                });
+            });
+            
+            allPartners.forEach((partner, index) => {
+                const row = `
+                    <tr id="partner-row-${index}">
+                        <td class="px-6 py-4 text-sm text-gray-900">${index + 1}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">${partner.name}</td>
+                        <td class="px-6 py-4"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">${partner.status}</span></td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Render news table
+        function renderNewsTable() {
+            const tbody = document.getElementById('newsTableBody');
+            tbody.innerHTML = '';
+            
+            // Add villages with status "YA" to news data
+            const activeVillages = villageData.filter(v => v.status === 'YA');
+            
+            activeVillages.forEach((village, index) => {
+                const villageKey = `${village.name}_${village.district}`;
+                const villagePosts = newsPosts[villageKey] || [];
+                const totalBerita = villagePosts.length;
+                
+                const row = `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 text-sm text-gray-900">${index + 1}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">Desa ${village.name}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">${village.district}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">${totalBerita}</td>
+                        <td class="px-6 py-4">
+                            <button onclick="openNewsPosting('${village.name}', '${village.district}')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition-all">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const activeVillages = villageData.filter(v => v.status === 'YA').length;
+            const totalPartners = partnerData.length + activeVillages;
+            
+            // Calculate total news from actual posts
+            let totalNews = 0;
+            
+            Object.values(newsPosts).forEach(posts => {
+                totalNews += posts.length;
+            });
+            
+            document.getElementById('mitraAktif').textContent = totalPartners;
+            document.getElementById('totalBerita').textContent = totalNews;
+        }
+
+        // Menu navigation functions
+        function showSection(sectionName) {
+            // If we're in postingan berita view, validate before allowing navigation
+            if (selectedVillage && !document.getElementById('postinganBeritaView').classList.contains('hidden')) {
+                if (!validateAllCheckedNews()) {
+                    return; // Don't allow navigation if validation fails
+                }
+            }
+            
+            // Fast response - immediately show active state
+            document.querySelectorAll('[id^="tab"]').forEach(tab => {
+                tab.className = 'px-6 py-4 font-medium text-gray-600 hover:text-red-600 hover:bg-gray-100 transition-all';
+            });
+            
+            const activeTab = document.getElementById('tab' + sectionName.charAt(0).toUpperCase() + sectionName.slice(1));
+            activeTab.className = 'px-6 py-4 font-medium text-red-600 bg-white border-b-2 border-red-600 transition-all';
+            
+            // Then handle content switching
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            document.getElementById(sectionName).classList.remove('hidden');
+            
+            // Ensure we're showing the main data berita list when clicking data berita tab
+            if (sectionName === 'dataBerita') {
+                document.getElementById('dataBeritaList').classList.remove('hidden');
+                document.getElementById('postinganBeritaView').classList.add('hidden');
+                selectedVillage = null;
+            }
+        }
+
+        // Village form functions
+        function showAddVillageForm() {
+            const form = document.getElementById('addVillageForm');
+            if (form) {
+                form.classList.remove('hidden');
+                document.getElementById('villageForm').reset();
+                // Scroll to form
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function hideAddVillageForm() {
+            const form = document.getElementById('addVillageForm');
+            if (form) {
+                form.classList.add('hidden');
+                document.getElementById('villageForm').reset();
+            }
+        }
+
+        // Inline edit functionality
+        function editCell(index, field) {
+            const village = villageData[index];
+            const cellId = `${field}-${index}`;
+            const cell = document.getElementById(cellId);
+            
+            // Prevent multiple edits on same cell
+            if (cell.querySelector('select') || cell.querySelector('input')) {
+                return;
+            }
+            
+            if (field === 'status') {
+                // Create dropdown for status with better styling
+                const currentStatus = village.status;
+                cell.innerHTML = `
+                    <select id="edit-${cellId}" class="px-3 py-2 border-2 border-red-500 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer" onchange="saveCell(${index}, '${field}')" onclick="event.stopPropagation()">
+                        <option value="YA" ${currentStatus === 'YA' ? 'selected' : ''}>YA</option>
+                        <option value="TIDAK" ${currentStatus === 'TIDAK' ? 'selected' : ''}>TIDAK</option>
+                        <option value="PROSES" ${currentStatus === 'PROSES' ? 'selected' : ''}>PROSES</option>
+                    </select>
+                `;
+                // Focus dropdown immediately
+                const dropdown = document.getElementById(`edit-${cellId}`);
+                dropdown.focus();
+            } else {
+                // Create input for name and district
+                const currentValue = village[field];
+                cell.innerHTML = `
+                    <input type="text" id="edit-${cellId}" value="${currentValue}" 
+                           class="px-3 py-2 border-2 border-red-500 rounded-lg text-sm w-full bg-white focus:outline-none focus:ring-2 focus:ring-red-500" 
+                           onblur="saveCell(${index}, '${field}')" 
+                           onkeypress="if(event.key==='Enter') saveCell(${index}, '${field}')"
+                           onclick="event.stopPropagation()">
+                `;
+                document.getElementById(`edit-${cellId}`).focus();
+                document.getElementById(`edit-${cellId}`).select();
+            }
+        }
+
+        function saveCell(index, field) {
+            const cellId = `${field}-${index}`;
+            const editElement = document.getElementById(`edit-${cellId}`);
+            
+            if (!editElement) return;
+            
+            const newValue = editElement.value.trim();
+            
+            if (!newValue) {
+                alert('❌ Field tidak boleh kosong!');
+                renderVillageTable();
+                return;
+            }
+            
+            // Update data
+            const oldValue = villageData[index][field];
+            villageData[index][field] = newValue;
+            
+            // Auto-save data
+            saveDataToStorage();
+            
+            // Re-render table and update all related data
+            renderVillageTable();
+            renderPartnerTable();
+            renderNewsTable();
+            updateStatistics();
+            
+            // Show success message with status explanation
+            const fieldName = field === 'name' ? 'Nama Desa' : field === 'district' ? 'Kecamatan' : 'Status';
+            let message = `✅ ${fieldName} berhasil diperbarui menjadi: ${newValue}`;
+            
+            if (field === 'status') {
+                if (newValue === 'YA') {
+                    message += '\n\n🎉 Desa ini sekarang AKTIF dan akan muncul di Data Mitra & Data Berita!';
+                } else if (newValue === 'TIDAK') {
+                    message += '\n\n❌ Desa ini sekarang TIDAK AKTIF dan tidak akan muncul di Data Mitra & Data Berita.';
+                } else if (newValue === 'PROSES') {
+                    message += '\n\n⏳ Desa ini sedang dalam PROSES dan belum muncul di Data Mitra & Data Berita.';
+                }
+            }
+            
+            alert(message);
+        }
+
+        // Village form handler
+        document.getElementById('villageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('villageName').value.trim();
+            const district = document.getElementById('villageDistrict').value.trim();
+            const status = document.getElementById('villageStatus').value;
+            
+            if (!name || !district || !status) {
+                alert('❌ Semua field harus diisi!');
+                return;
+            }
+            
+            const villageObj = {name, district, status};
+            
+            // Add new village
+            villageData.push(villageObj);
+            
+            // Auto-save data
+            saveDataToStorage();
+            
+            alert('✅ Data desa berhasil ditambahkan!\n\nDesa: ' + name + '\nKecamatan: ' + district + '\nStatus: ' + status);
+            
+            // Re-render all tables and update statistics
+            renderVillageTable();
+            renderPartnerTable();
+            renderNewsTable();
+            updateStatistics();
+            hideAddVillageForm();
+        });
+
+        // News posting functions
+        function openNewsPosting(villageName, district) {
+            selectedVillage = {name: villageName, district: district};
+            
+            // Hide data berita list and show postingan berita view
+            document.getElementById('dataBeritaList').classList.add('hidden');
+            document.getElementById('postinganBeritaView').classList.remove('hidden');
+            
+            document.getElementById('selectedVillageInfo').textContent = `Postingan Berita - Desa ${villageName}, ${district}`;
+            
+            renderMonthlyNewsGrid();
+        }
+
+        function backToDataBerita() {
+            if (!selectedVillage) return;
+            
+            // Check if there are any checked news slots without titles
+            if (!validateAllCheckedNews()) {
+                return; // Don't allow navigation if validation fails
+            }
+            
+            // Show data berita list and hide postingan berita view
+            document.getElementById('dataBeritaList').classList.remove('hidden');
+            document.getElementById('postinganBeritaView').classList.add('hidden');
+            
+            // Reset selected village
+            selectedVillage = null;
+        }
+
+        function renderMonthlyNewsGrid() {
+            if (!selectedVillage) {
+                document.getElementById('monthlyNewsGrid').innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-500">
+                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                        </svg>
+                        <p>Klik tombol "Edit" pada desa di Data Berita untuk melihat postingan bulanan</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const villageKey = `${selectedVillage.name}_${selectedVillage.district}`;
+            const posts = newsPosts[villageKey] || [];
+            const container = document.getElementById('monthlyNewsGrid');
+            
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            
+            container.innerHTML = months.map((month, index) => {
+                const monthPosts = posts.filter(post => {
+                    const postMonth = new Date(post.date).getMonth();
+                    return postMonth === index;
+                });
+                
+                // Count posts with titles filled (regardless of author)
+                const postsWithTitles = monthPosts.filter(post => 
+                    post.title && post.title.trim() !== ''
+                ).length;
+                
+                // Check if month has 2 checked items (regardless of content)
+                const checkedPostsCount = monthPosts.length;
+                
+                // Check if month is complete (2 posts with titles AND authors filled)
+                const completePostsCount = monthPosts.filter(post => 
+                    post.title && post.title.trim() !== '' && 
+                    post.author && post.author.trim() !== ''
+                ).length;
+                
+                // Color changes only when both posts are completely filled
+                const isComplete = completePostsCount >= 2;
+                const completionIcon = isComplete ? '✅' : '⏳';
+                const completionText = isComplete ? 'Lengkap' : `${checkedPostsCount}/2`;
+                const completionClass = isComplete ? 'bg-red-600 border-red-600 text-white' : 'bg-yellow-50 border-yellow-200';
+                
+                return `
+                    <div class="border rounded-lg p-6 hover:shadow-md transition-shadow ${completionClass}">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold ${isComplete ? 'text-white' : 'text-gray-900'}">${month}</h3>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm font-medium ${isComplete ? 'text-white' : 'text-yellow-600'}">${completionIcon} ${completionText}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            ${[0, 1].map(slotIndex => {
+                                const post = monthPosts[slotIndex];
+                                const isChecked = post ? true : false;
+                                const authorName = post ? post.author : '';
+                                
+                                const newsTitle = post ? post.title : '';
+                                
+                                return `
+                                    <div class="${isComplete ? 'bg-white' : 'bg-gray-50'} p-3 rounded border">
+                                        <div class="flex items-start space-x-3">
+                                            <input 
+                                                type="checkbox" 
+                                                id="check_${index}_${slotIndex}"
+                                                ${isChecked ? 'checked' : ''}
+                                                onchange="toggleNewsSlot(${index}, ${slotIndex})"
+                                                class="w-5 h-5 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2 mt-1"
+                                            >
+                                            <div class="flex-1 space-y-2">
+                                                <label class="text-sm font-medium ${isComplete ? 'text-white' : 'text-gray-700'} block">Berita ${slotIndex + 1}</label>
+                                                
+                                                <input 
+                                                    type="text" 
+                                                    id="title_${index}_${slotIndex}"
+                                                    value="${newsTitle}"
+                                                    placeholder="Masukkan judul berita... (WAJIB)"
+                                                    ${!isChecked ? 'disabled' : 'required'}
+                                                    oninput="updateNewsTitle(${index}, ${slotIndex})"
+                                                    onkeyup="updateNewsTitle(${index}, ${slotIndex})"
+                                                    onblur="validateRequiredFields(${index}, ${slotIndex})"
+                                                    class="w-full px-3 py-2 text-sm text-black border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500 ${!isChecked ? 'bg-gray-100 text-gray-400' : 'bg-white'}"
+                                                >
+                                                
+                                                <select 
+                                                    id="author_${index}_${slotIndex}"
+                                                    ${!isChecked ? 'disabled' : 'required'}
+                                                    onchange="updateAuthorName(${index}, ${slotIndex})"
+                                                    onblur="validateRequiredFields(${index}, ${slotIndex})"
+                                                    class="w-full px-3 py-2 text-sm text-black border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500 ${!isChecked ? 'bg-gray-100 text-gray-400' : 'bg-white'}"
+                                                >
+                                                    <option value="">Pilih pembuat berita (WAJIB)</option>
+                                                    <option value="Hikmah" ${authorName === 'Hikmah' ? 'selected' : ''}>Hikmah</option>
+                                                    <option value="Khaisar" ${authorName === 'Khaisar' ? 'selected' : ''}>Khaisar</option>
+                                                    <option value="Rini" ${authorName === 'Rini' ? 'selected' : ''}>Rini</option>
+                                                    <option value="Yudha" ${authorName === 'Yudha' ? 'selected' : ''}>Yudha</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleNewsSlot(monthIndex, slotIndex) {
+            if (!selectedVillage) return;
+            
+            const villageKey = `${selectedVillage.name}_${selectedVillage.district}`;
+            if (!newsPosts[villageKey]) {
+                newsPosts[villageKey] = [];
+            }
+            
+            const posts = newsPosts[villageKey];
+            const monthPosts = posts.filter(post => {
+                const postMonth = new Date(post.date).getMonth();
+                return postMonth === monthIndex;
+            });
+            
+            const checkbox = document.getElementById(`check_${monthIndex}_${slotIndex}`);
+            
+            if (checkbox.checked) {
+                // Create a new post
+                const currentYear = new Date().getFullYear();
+                const newPost = {
+                    id: Date.now() + slotIndex,
+                    title: '',
+                    author: '',
+                    date: `${currentYear}-${String(monthIndex + 1).padStart(2, '0')}-01`,
+                    category: 'Pemerintahan',
+                    content: `Berita ${slotIndex + 1} untuk bulan ${getMonthName(monthIndex)} ${currentYear}`
+                };
+                posts.push(newPost);
+                
+            } else {
+                // When unchecking, handle slot movement
+                if (slotIndex === 0 && monthPosts.length >= 2) {
+                    // If unchecking slot 0 and slot 1 exists, move slot 1 to slot 0
+                    const slot1Post = monthPosts[1];
+                    if (slot1Post) {
+                        // Remove both posts
+                        const slot0Index = posts.findIndex(p => p.id === monthPosts[0].id);
+                        const slot1Index = posts.findIndex(p => p.id === monthPosts[1].id);
+                        
+                        if (slot0Index !== -1) posts.splice(slot0Index, 1);
+                        if (slot1Index !== -1) posts.splice(slot1Index > slot0Index ? slot1Index - 1 : slot1Index, 1);
+                        
+                        // Re-add slot1 data as slot0
+                        const movedPost = {
+                            id: Date.now(),
+                            title: slot1Post.title,
+                            author: slot1Post.author,
+                            date: slot1Post.date,
+                            category: slot1Post.category,
+                            content: slot1Post.content
+                        };
+                        posts.push(movedPost);
+                    }
+                } else {
+                    // Normal removal for slot 1 or when no movement needed
+                    if (monthPosts[slotIndex]) {
+                        const postIndex = posts.findIndex(p => p.id === monthPosts[slotIndex].id);
+                        if (postIndex !== -1) {
+                            posts.splice(postIndex, 1);
+                        }
+                    }
+                }
+            }
+            
+            // Auto-save data
+            saveDataToStorage();
+            
+            // Full re-render to update all UI elements correctly
+            renderMonthlyNewsGrid();
+            updateStatistics();
+            renderNewsTable();
+        }
+
+        function updateAuthorName(monthIndex, slotIndex) {
+            if (!selectedVillage) return;
+            
+            const villageKey = `${selectedVillage.name}_${selectedVillage.district}`;
+            const posts = newsPosts[villageKey] || [];
+            const monthPosts = posts.filter(post => {
+                const postMonth = new Date(post.date).getMonth();
+                return postMonth === monthIndex;
+            });
+            
+            const authorInput = document.getElementById(`author_${monthIndex}_${slotIndex}`);
+            const newAuthorName = authorInput.value.trim();
+            
+            if (monthPosts[slotIndex]) {
+                const postIndex = posts.findIndex(p => p.id === monthPosts[slotIndex].id);
+                if (postIndex !== -1) {
+                    posts[postIndex].author = newAuthorName;
+                    
+                    // Auto-save data
+                    saveDataToStorage();
+                }
+            }
+            
+            // Update counter and color instantly
+            updateMonthCardColor(monthIndex);
+        }
+
+        function updateNewsTitle(monthIndex, slotIndex) {
+            if (!selectedVillage) return;
+            
+            const villageKey = `${selectedVillage.name}_${selectedVillage.district}`;
+            const posts = newsPosts[villageKey] || [];
+            const monthPosts = posts.filter(post => {
+                const postMonth = new Date(post.date).getMonth();
+                return postMonth === monthIndex;
+            });
+            
+            const titleInput = document.getElementById(`title_${monthIndex}_${slotIndex}`);
+            const newTitle = titleInput.value.trim();
+            
+            if (monthPosts[slotIndex]) {
+                const postIndex = posts.findIndex(p => p.id === monthPosts[slotIndex].id);
+                if (postIndex !== -1) {
+                    posts[postIndex].title = newTitle;
+                    
+                    // Auto-save data
+                    saveDataToStorage();
+                }
+            }
+            
+            // Update counter and color instantly
+            updateMonthCardColor(monthIndex);
+        }
+
+        function getMonthName(monthIndex) {
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            return months[monthIndex];
+        }
+
+        function updateMonthCardColor(monthIndex) {
+            if (!selectedVillage) return;
+            
+            const villageKey = `${selectedVillage.name}_${selectedVillage.district}`;
+            const posts = newsPosts[villageKey] || [];
+            
+            const monthPosts = posts.filter(post => {
+                const postMonth = new Date(post.date).getMonth();
+                return postMonth === monthIndex;
+            });
+            
+            // Check if month has 2 checked items (regardless of content)
+            const checkedPostsCount = monthPosts.length;
+            
+            // Check if month is complete (2 posts with titles AND authors filled)
+            const completePostsCount = monthPosts.filter(post => 
+                post.title && post.title.trim() !== '' && 
+                post.author && post.author.trim() !== ''
+            ).length;
+            
+            // Color changes only when both posts are completely filled
+            const isComplete = completePostsCount >= 2;
+            const completionIcon = isComplete ? '✅' : '⏳';
+            const completionText = isComplete ? 'Lengkap' : `${checkedPostsCount}/2`;
+            const completionClass = isComplete ? 'bg-red-600 border-red-600 text-white' : 'bg-yellow-50 border-yellow-200';
+            
+            // Find the month card and update its classes and content
+            const monthCards = document.querySelectorAll('#monthlyNewsGrid > div');
+            if (monthCards[monthIndex]) {
+                const card = monthCards[monthIndex];
+                
+                // Update card background and border
+                card.className = `border rounded-lg p-6 hover:shadow-md transition-shadow ${completionClass}`;
+                
+                // Update title color
+                const title = card.querySelector('h3');
+                if (title) {
+                    title.className = `text-lg font-semibold ${isComplete ? 'text-white' : 'text-gray-900'}`;
+                }
+                
+                // Update completion status
+                const statusSpan = card.querySelector('.flex.items-center.space-x-2 span');
+                if (statusSpan) {
+                    statusSpan.className = `text-sm font-medium ${isComplete ? 'text-white' : 'text-yellow-600'}`;
+                    statusSpan.textContent = `${completionIcon} ${completionText}`;
+                }
+                
+                // Update news slot backgrounds
+                const newsSlots = card.querySelectorAll('.space-y-3 > div');
+                newsSlots.forEach(slot => {
+                    slot.className = `${isComplete ? 'bg-white' : 'bg-gray-50'} p-3 rounded border`;
+                });
+                
+                // Update labels
+                const labels = card.querySelectorAll('label');
+                labels.forEach(label => {
+                    label.className = `text-sm font-medium ${isComplete ? 'text-white' : 'text-gray-700'} block`;
+                });
+            }
+        }
+
+        function validateRequiredFields(monthIndex, slotIndex) {
+            const titleInput = document.getElementById(`title_${monthIndex}_${slotIndex}`);
+            const authorInput = document.getElementById(`author_${monthIndex}_${slotIndex}`);
+            
+            if (!titleInput || !authorInput) return;
+            
+            const title = titleInput.value.trim();
+            const author = authorInput.value.trim();
+            
+            // Reset border colors first
+            titleInput.classList.remove('border-red-500');
+            authorInput.classList.remove('border-red-500');
+            
+            let hasError = false;
+            
+            // Validate title
+            if (!title) {
+                titleInput.classList.add('border-red-500');
+                hasError = true;
+            }
+            
+            // Validate author
+            if (!author) {
+                authorInput.classList.add('border-red-500');
+                hasError = true;
+            }
+            
+            if (hasError) {
+                alert('❌ Judul berita dan pembuat berita wajib diisi!');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function validateAllCheckedNews() {
+            if (!selectedVillage) return true;
+            
+            const villageKey = `${selectedVillage.name}_${selectedVillage.district}`;
+            const posts = newsPosts[villageKey] || [];
+            
+            // Check all 12 months
+            for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+                const monthPosts = posts.filter(post => {
+                    const postMonth = new Date(post.date).getMonth();
+                    return postMonth === monthIndex;
+                });
+                
+                // If month has 2 checked items but not all are complete, block navigation
+                if (monthPosts.length >= 2) {
+                    const completePostsCount = monthPosts.filter(post => 
+                        post.title && post.title.trim() !== '' && 
+                        post.author && post.author.trim() !== ''
+                    ).length;
+                    
+                    if (completePostsCount < 2) {
+                        // Find the incomplete posts
+                        for (let slotIndex = 0; slotIndex < 2; slotIndex++) {
+                            const post = monthPosts[slotIndex];
+                            if (post && (!post.title || post.title.trim() === '' || !post.author || post.author.trim() === '')) {
+                                const titleInput = document.getElementById(`title_${monthIndex}_${slotIndex}`);
+                                const authorInput = document.getElementById(`author_${monthIndex}_${slotIndex}`);
+                                const monthName = getMonthName(monthIndex);
+                                
+                                const title = post.title || '';
+                                const author = post.author || '';
+                                
+                                if (!title && !author) {
+                                    // Both empty
+                                    titleInput.classList.add('border-red-500');
+                                    authorInput.classList.add('border-red-500');
+                                    titleInput.focus();
+                                    
+                                    alert(`❌ Tidak bisa keluar dari halaman ini!\n\nBerita ${slotIndex + 1} di bulan ${monthName} masih kosong:\n- Judul berita\n- Pembuat berita\n\nSilakan:\n1. Isi judul dan pembuat berita, atau\n2. Hapus centang jika tidak ingin membuat berita`);
+                                    return false;
+                                } else if (!title) {
+                                    // Only title empty
+                                    titleInput.classList.add('border-red-500');
+                                    titleInput.focus();
+                                    
+                                    alert(`❌ Tidak bisa keluar dari halaman ini!\n\nBerita ${slotIndex + 1} di bulan ${monthName} masih kosong judulnya.\n\nSilakan:\n1. Isi judul berita, atau\n2. Hapus centang jika tidak ingin membuat berita`);
+                                    return false;
+                                } else if (!author) {
+                                    // Only author empty
+                                    authorInput.classList.add('border-red-500');
+                                    authorInput.focus();
+                                    
+                                    alert(`❌ Tidak bisa keluar dari halaman ini!\n\nBerita ${slotIndex + 1} di bulan ${monthName} masih kosong pembuat beritanya.\n\nSilakan:\n1. Pilih pembuat berita, atau\n2. Hapus centang jika tidak ingin membuat berita`);
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Also check individual checked items that are less than 2
+                for (let slotIndex = 0; slotIndex < 2; slotIndex++) {
+                    const checkbox = document.getElementById(`check_${monthIndex}_${slotIndex}`);
+                    const titleInput = document.getElementById(`title_${monthIndex}_${slotIndex}`);
+                    const authorInput = document.getElementById(`author_${monthIndex}_${slotIndex}`);
+                    
+                    // If checkbox is checked, both title and author must be filled
+                    if (checkbox && checkbox.checked && titleInput && authorInput) {
+                        const title = titleInput.value.trim();
+                        const author = authorInput.value.trim();
+                        const monthName = getMonthName(monthIndex);
+                        
+                        if (!title && !author) {
+                            // Both empty
+                            titleInput.classList.add('border-red-500');
+                            authorInput.classList.add('border-red-500');
+                            titleInput.focus();
+                            
+                            alert(`❌ Tidak bisa keluar dari halaman ini!\n\nBerita ${slotIndex + 1} di bulan ${monthName} masih kosong:\n- Judul berita\n- Pembuat berita\n\nSilakan:\n1. Isi judul dan pembuat berita, atau\n2. Hapus centang jika tidak ingin membuat berita`);
+                            return false;
+                        } else if (!title) {
+                            // Only title empty
+                            titleInput.classList.add('border-red-500');
+                            titleInput.focus();
+                            
+                            alert(`❌ Tidak bisa keluar dari halaman ini!\n\nBerita ${slotIndex + 1} di bulan ${monthName} masih kosong judulnya.\n\nSilakan:\n1. Isi judul berita, atau\n2. Hapus centang jika tidak ingin membuat berita`);
+                            return false;
+                        } else if (!author) {
+                            // Only author empty
+                            authorInput.classList.add('border-red-500');
+                            authorInput.focus();
+                            
+                            alert(`❌ Tidak bisa keluar dari halaman ini!\n\nBerita ${slotIndex + 1} di bulan ${monthName} masih kosong pembuat beritanya.\n\nSilakan:\n1. Pilih pembuat berita, atau\n2. Hapus centang jika tidak ingin membuat berita`);
+                            return false;
+                        }
+                    }
+                }
+            }
+            
+            return true;
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'963010d1378db5ae',t:'MTc1MzE1NzE4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
